@@ -1,0 +1,12 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+
+#Google Console API credentials
+credentials.json
+
+.DS_Store
