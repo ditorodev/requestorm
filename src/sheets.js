@@ -1,4 +1,5 @@
 const Promise = require('promise');
+const util = require('util');
 
 class GSheet {
     constructor([driveService, sheetsService]){
@@ -24,35 +25,41 @@ class GSheet {
                 console.log(err);
                 reject(err);
               } else {
-                console.log(`Spreadsheet ID: ${spreadsheet.data.spreadsheetId}`);
                 resolve(spreadsheet.data.spreadsheetId);
               }
             });
           });
     }
-
     /**
-     * Gets all cells values from an entire row.
-     * @param  {string} spreadsheetId The spreadsheet id.
-     * @param  {number} rowN The row number in the spreadsheet where we want to get cells.
+     * Append Values to first sheet found in the Spreadsheet
+     * @param  {string} spreadsheetId the spreadsheet id
+     * @param  {string} range A1 notation of a range, without the sheet name
+     * @param  {Array <String []>} values Array of values
      */
-      async getRow(spreadsheetId, rowN){
-      return new Promise ((resolve, reject) => {
-          let range = `${rowN}:${rowN}`;
-          let value = {
-              spreadsheetId,
-              range
-          };
-  
-          this.sheetsService.spreadsheets.values.get(value, (err, result)=> {
-              if( err ){
-                  reject(err);
-              } else {
-                  resolve(result);
-              }
-          });
-      }); 
-  }
+    async appendValues(spreadsheetId, range, values){
+      return new Promise((resolve, reject) => {
+        const data = {
+          spreadsheetId,
+          range,
+          valueInputOption: 'USER_ENTERED',
+          resource: {
+            values
+          }
+        }
+        this.sheetsService.spreadsheets.values.append(data, (err, result) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            console.log(`${result.data.updates} cells appended.`);
+            resolve(result.data);
+          }
+        });
+
+      });
+    }
+
+    
 }
 
 module.exports = GSheet;

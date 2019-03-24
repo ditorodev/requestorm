@@ -39,8 +39,17 @@ describe('Spreadsheet Snippets', () => {
     }));
 
     it('should append a row in spreadsheet', mochaAsync(async () => {
-      const testSpreadsheet = await sheets.createSpreadsheet('Example');
-      
-
+      const testSpreadsheet = await snippets.createSpreadsheet('Example');
+      // await snippets.appendValues();
+      const values = [
+        ['A', 'B', 'C']
+      ];
+      const range = "1:1";
+      const result = await snippets.appendValues(testSpreadsheet, range, values);
+      const resValues = await helpers.getRow(testSpreadsheet, 1);
+      expect(result.updates.updatedRows).toBe(1);
+      expect(result.updates.updatedColumns).toBe(3);
+      expect(result.updates.updatedCells).toBe(3);
+      expect(resValues.values).toEqual(values);
     }))
 })

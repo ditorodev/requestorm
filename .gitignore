@@ -8,5 +8,9 @@ jspm_packages
 
 #Google Console API credentials
 credentials.json
-
+*credentials.json
+*Credentials.json
 .DS_Store
+
+#personal
+.env*
