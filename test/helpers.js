@@ -57,58 +57,6 @@ class Helpers {
             return result.data;
         });
     }
-
-    /**
-     * Adds a string to a 1x11 grid of Spreadsheet cells.
-     * @param {string} spreadsheetId The spreadsheet ID.
-     * @return {Promise} A promise to return the Google API service.
-     */
-    populateValues(spreadsheetId) {
-        return this.sheetsService.then((sheets) => {
-            const batchUpdate = Promise.denodeify(sheets.spreadsheets.batchUpdate)
-                .bind(sheets.spreadsheets);
-            return batchUpdate({
-                    spreadsheetId,
-                    resource: {
-                        requests: [{
-                            repeatCell: {
-                                range: {
-                                    sheetId: 0,
-                                    startRowIndex: 0,
-                                    endRowIndex: 1,
-                                    startColumnIndex: 0,
-                                    endColumnIndex: 10,
-                                },
-                                cell: {
-                                    userEnteredValue: {
-                                        stringValue: 'Hello',
-                                    },
-                                },
-                                fields: 'userEnteredValue',
-                            },
-                        }],
-                    },
-                })
-                .then(() => spreadsheetId);
-        });
-    }
 }
-
-// reset() {
-//     this.filesToDeleted = [];
-// }
-
-// deleteFileOnCleanup(id) {
-//     this.filesToDelete.push(id);
-// }
-
-// cleanup() {
-//     return this.driveService.then((drive) => {
-//         this.filesToDelete.map((fileId) => {
-//             drive.files.delete({fileId});
-//         })
-//     })
-// }
-// }
 
 module.exports = Helpers;
