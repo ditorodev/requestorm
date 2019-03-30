@@ -40,11 +40,15 @@ class GSheet {
     /**
      * Make an Update to the Spreadseet
      * @param  {String} spreadsheetId SpreadsheetID to update
-     * @param  {Object[]} resource Array with all the operations
+     * @param  {Object[]} resources Array with all the operations
      * @return {Promise<any>} Promise with result
      */
-    async batchUpdate(spreadsheetId, resource){
+    async batchUpdate(spreadsheetId, resources){
       return new Promise((resolve, reject) => {
+        let resource = {
+          requests: [],
+        }
+        resources.map((req) => resource.requests.push(req));
          const data = {
            spreadsheetId,
            resource
@@ -107,7 +111,6 @@ class GSheet {
             console.log(err);
             reject(err);
           } else {
-            console.log(`${result.data.updates} cells appended.`);
             resolve(result.data);
           }
         });
@@ -128,21 +131,44 @@ class GSheet {
       @return {Promise<any>} Promise with BatchUpdateResponse form google sheets api v4
      */
     async createProtectedRange(spreadsheetId, range){
-      const resource = {
-        requests: [{
+      const resource = [{
             addProtectedRange: {
               protectedRange:{
                 range,
                 warningOnly: true,
               },
             }
-          }]
-      };
+        }];
 
       return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addProtectedRange.protectedRange);
     }
+    /**
+     * Creates a named range.
+     * @param  {String} spreadsheetId The Spreadsheet ID.
+     * @param  {String} rangeName Name of the Range.
+     * @param  {Object} range Range we want to name.
+     * @return {Promise<any>} namedRange object.
+     */
+    async createNamedRange(spreadsheetId, rangeName, range) {
+      const resource = [{
+        addNamedRange: {
+          namedRange: {
+            range,
+            name: rangeName
+          }
+        }
+      }];
 
-    
+      return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addNamedRange);
+    }
+
+    /**
+     * Format spreadsheet to receive data
+     * @param  {String} spreadsheetId The Spreadsheet ID.
+     */
+    async formatSpreadsheet (spreadsheetId) {
+
+    }
 }
 
 module.exports = GSheet;

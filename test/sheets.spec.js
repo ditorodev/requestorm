@@ -120,4 +120,21 @@ describe('Spreadsheet Snippets', () => {
       expect(result.protectedRangeId).toBeDefined();
       expect(result.range).toEqual(range);
     }));
+
+    it('should create a named range', mochaAsync(async ()=>{
+      const testSpreadsheet = await snippets.createSpreadsheet('Example');
+      const range = {
+        startColumnIndex: 0,
+        startRowIndex: 0,
+        endRowIndex: 1
+      }
+      const result = await snippets.createdNamedRange(testSpreadsheet, 'Name1', range);
+    }));
+
+
+
+    it('should format a spreadsheet', mochaAsync(async () => {
+      const testSpreadsheet = await snippets.createSpreadsheet('Example');
+      await snippets.formatSpreadsheet(testSpreadsheet);
+    }));
 })
