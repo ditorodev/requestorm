@@ -126,15 +126,22 @@ describe('Spreadsheet Snippets', () => {
       const range = {
         startColumnIndex: 0,
         startRowIndex: 0,
-        endRowIndex: 1
+        endRowIndex: 1,
+        endColumnIndex: 0
       }
-      const result = await snippets.createdNamedRange(testSpreadsheet, 'Name1', range);
+      const name = 'ExampleeeeRange';
+      const result = await snippets.createNamedRange(testSpreadsheet, name, range);
+
+      expect(result.namedRangeId).toBeDefined();
+      expect(result.name).toEqual(name);
+      expect(result.range).toEqual(range);
     }));
 
 
 
-    it('should format a spreadsheet', mochaAsync(async () => {
-      const testSpreadsheet = await snippets.createSpreadsheet('Example');
-      await snippets.formatSpreadsheet(testSpreadsheet);
-    }));
+    // it('should format a spreadsheet', mochaAsync(async () => {
+    //   const testSpreadsheet = await snippets.createSpreadsheet('Example');
+    //   await snippets.formatSpreadsheet(testSpreadsheet);
+
+    // }));
 })

@@ -159,11 +159,13 @@ class GSheet {
         }
       }];
 
-      return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addNamedRange);
+      return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addNamedRange.namedRange);
     }
 
     /**
-     * Format spreadsheet to receive data
+     * Format spreadsheet to receive data.
+     * - Sets protected row of parameters.
+     * - Sets named column for each parameter.
      * @param  {String} spreadsheetId The Spreadsheet ID.
      */
     async formatSpreadsheet (spreadsheetId) {
