@@ -1,11 +1,11 @@
 const Promise = require('promise');
 const util = require('util');
+// const Core = require('../');
 
 class GSheet {
     constructor([driveService, sheetsService]){
         this.driveService = driveService;
         this.sheetsService = sheetsService;
-        
     }
 
      /**
