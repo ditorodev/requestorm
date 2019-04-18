@@ -7,6 +7,7 @@ provider:
   environment: 
     GOOGLE_OAUTH_CLIENT_ID: 474773079658-21ipdl7dv4hsb5h92lpfhr6spbjuae1q.apps.googleusercontent.com
     GOOGLE_OAUTH_SECRET_CLIENT_ID: aafZJGmp5wXSRDKaypS5bgq-
+    SECRET_: test of key :DDDD
 
   package:
     excludeDevDependencies: true
@@ -54,8 +55,18 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  postToSheets:
+    handler: handler.postToSheets
+    events:
+      - http:
+        path: /:userToken/sheets/post
+        method: post
+        request:
+          parameters: 
+            paths:
+              userToken: true
+              
+
 
   createSpreadsheet:
     handler: handler.createSpreadsheet

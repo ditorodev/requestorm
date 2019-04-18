@@ -1,7 +1,6 @@
 const Promise = require('promise');
 const util = require('util');
 const googleapis = require('googleapis');
-const GoogleAuth = require('google-auth-library');
 
 
 class Helpers {
@@ -30,7 +29,7 @@ class Helpers {
                 'https://www.googleapis.com/auth/drive',
                 'https://www.googleapis.com/auth/spreadsheets',
             ];
-            const client = await GoogleAuth.auth.getClient({
+            const client = await googleapis.google.auth.getClient({
                 scopes: scopes
             });
 

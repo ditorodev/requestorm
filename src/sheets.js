@@ -119,7 +119,6 @@ class GSheet {
     }
     /**
      * Creates a Protected Range
-     * @param  {String} spreadsheetId The Spreadsheet ID
      * @param  {Object} range Range following next object
      * "range": {
             "sheetId": sheetId,
@@ -128,20 +127,20 @@ class GSheet {
             "startColumnIndex": 0,
             "endColumnIndex": 5,
           }
-      @return {Promise<any>} Promise with BatchUpdateResponse form google sheets api v4
-     */
-    async createProtectedRange(spreadsheetId, range){
-      const resource = [{
+      @return {Promise<any>} Promise with BatchUpdateResponse from google sheets api v4
+     */ 
+    createProtectedRangeReq(range){
+      const resource = {
             addProtectedRange: {
               protectedRange:{
                 range,
                 warningOnly: true,
               },
             }
-        }];
-
-      return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addProtectedRange.protectedRange);
+        };
+        return resource;
     }
+
     /**
      * Creates a named range.
      * @param  {String} spreadsheetId The Spreadsheet ID.
@@ -149,17 +148,17 @@ class GSheet {
      * @param  {Object} range Range we want to name.
      * @return {Promise<any>} namedRange object.
      */
-    async createNamedRange(spreadsheetId, rangeName, range) {
-      const resource = [{
+     createNamedRangeReq(rangeName, range) {
+      const resource = {
         addNamedRange: {
           namedRange: {
             range,
             name: rangeName
           }
         }
-      }];
-
-      return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addNamedRange.namedRange);
+      };
+      return resource;
+      // return this.batchUpdate(spreadsheetId, resource).then((data) => data.replies[0].addNamedRange.namedRange);
     }
 
 }

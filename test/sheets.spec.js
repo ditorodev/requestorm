@@ -116,9 +116,11 @@ describe('Spreadsheet Snippets', () => {
         endRowIndex: 1,
         startRowIndex: 1
       }; // First Row
-      const result = await snippets.createProtectedRange(testSpreadsheet, range);
-      expect(result.protectedRangeId).toBeDefined();
-      expect(result.range).toEqual(range);
+      const protectedRange = snippets.createProtectedRangeReq(testSpreadsheet, range);
+      const result = await snippets.batchUpdate(testSpreadsheet, [protectedRange]);
+
+      expect(result.replies[0].addProtectedRange.protectedRange).toBeDefined();
+      expect(result.replies[0].addProtectedRange.protectedRange.range).toEqual(range);
     }));
 
     it('should create a named range', mochaAsync(async ()=>{
@@ -130,18 +132,12 @@ describe('Spreadsheet Snippets', () => {
         endColumnIndex: 0
       }
       const name = 'ExampleeeeRange';
-      const result = await snippets.createNamedRange(testSpreadsheet, name, range);
+      const namedRange = snippets.createNamedRangeReq(name, range);
+      const result = await snippets.batchUpdate(testSpreadsheet, [namedRange]);
 
-      expect(result.namedRangeId).toBeDefined();
-      expect(result.name).toEqual(name);
-      expect(result.range).toEqual(range);
+      expect(result.replies[0].addNamedRange.namedRange.namedRangeId).toBeDefined();
+      expect(result.replies[0].addNamedRange.namedRange.name).toEqual(name);
+      expect(result.replies[0].addNamedRange.namedRange.range).toEqual(range);
     }));
 
-
-
-    // it('should format a spreadsheet', mochaAsync(async () => {
-    //   const testSpreadsheet = await snippets.createSpreadsheet('Example');
-    //   await snippets.formatSpreadsheet(testSpreadsheet);
-
-    // }));
 })
